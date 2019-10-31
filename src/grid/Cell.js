@@ -1,27 +1,69 @@
-import React, { useContext } from "react";
+import React, { useState, memo } from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
-import GridContext from "./GridContext";
+const Cell = memo(props => {
+  const {
+    baseClass,
+    row,
+    column,
+    updateSelectedCells,
+    isWall,
+    handleSelectStartOrEndCell,
+    isSelectingStartCell,
+    isStartCell,
+    isSelectingEndCell,
+    isEndCell
+  } = props;
+  const clsName = cn({
+    [baseClass]: true,
+    wall: isWall
+  });
 
-const Cell = props => {
-  const { baseClass, row, column } = props;
-
-  const selectCell = e => {
-    console.table(e);
-    console.log(`Cell with row ${row} and col ${column} selected`);
+  const updateSelectedValue = e => {
+    if (e.buttons === 1 && !isWall && !isEndCell && !isStartCell) {
+      updateSelectedCells(row, column);
+    }
   };
-  return <td onMouseEnter={selectCell} className={baseClass}></td>;
-};
+
+  const handleSelectCell = _ => {
+    if (isSelectingStartCell) {
+      // TODO - place in constants file
+      handleSelectStartOrEndCell(row, column, "start");
+    }
+
+    if (isSelectingEndCell) {
+      handleSelectStartOrEndCell(row, column, "end");
+    }
+  };
+
+  return (
+    <td
+      onMouseEnter={updateSelectedValue}
+      onMouseUp={handleSelectCell}
+      className={clsName}
+    >
+      {isStartCell ? "S" : null}
+      {isEndCell ? "E" : null}
+    </td>
+  );
+});
 
 Cell.propTypes = {
   baseClass: PropTypes.string,
   row: PropTypes.number.isRequired,
-  column: PropTypes.number.isRequired
+  column: PropTypes.number.isRequired,
+  selected: PropTypes.bool,
+  handleSelectStartOrEndCell: PropTypes.func,
+  isSelectingStartCell: PropTypes.bool,
+  isStartCell: PropTypes.bool,
+  isSelectingEndCell: PropTypes.bool,
+  isEndCell: PropTypes.bool
 };
 
 Cell.defaultProps = {
-  baseClass: "graph-traversal-visualizer-cell"
+  baseClass: "graph-traversal-visualizer-cell",
+  selected: false
 };
 
 export default Cell;

@@ -1,13 +1,33 @@
 .graph-traversal-visualizer-grid {
-  padding: 50px;
 
-  .graph-traversal-visualizer-grid-table {
-    border-collapse: collapse;
+  .graph-traversal-visualizer-grid-table-container {
+    padding: 50px;
+
+    .graph-traversal-visualizer-grid-table {
+      border-collapse: collapse;
+    }
   }
 
   .graph-traversal-visualizer-cell {
     height: 25px;
     width: 25px;
+    border: 1px solid black;
+  }
+
+  .graph-traversal-visualizer-cell:hover {
+    background-color: yellow;
+  }
+
+  .graph-traversal-visualizer-cell.wall {
+    background-color: #383838;
+  }
+
+  .graph-traversal-visualizer-grid-start-drag,
+  .graph-traversal-visualizer-grid-end-drag,
+  .graph-traversal-visualizer-grid-reset-grid {
+    padding-right: 50px;
+    height: 20px;
+    width: 20px;
     border: 1px solid black;
   }
 }
