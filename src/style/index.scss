@@ -1,0 +1,13 @@
+.graph-traversal-visualizer-grid {
+  padding: 50px;
+
+  .graph-traversal-visualizer-grid-table {
+    border-collapse: collapse;
+  }
+
+  .graph-traversal-visualizer-cell {
+    height: 25px;
+    width: 25px;
+    border: 1px solid black;
+  }
+}
