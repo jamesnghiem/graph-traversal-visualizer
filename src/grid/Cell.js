@@ -7,39 +7,47 @@ const Cell = memo(props => {
     baseClass,
     row,
     column,
-    updateSelectedCells,
+    updateWallCells,
     isWall,
     handleSelectStartOrEndCell,
-    isSelectingStartCell,
     isStartCell,
-    isSelectingEndCell,
-    isEndCell
+    isEndCell,
+    traversalStep,
+    isOptimalPath
   } = props;
+  const [renderTraversal, setRenderTraversal] = useState(false);
+
   const clsName = cn({
     [baseClass]: true,
-    wall: isWall
+    wall: isWall,
+    traversed: !!traversalStep && renderTraversal,
+    "optimal-path": isOptimalPath && renderTraversal
   });
 
-  const updateSelectedValue = e => {
+  const handleUpdateWallCell = e => {
     if (e.buttons === 1 && !isWall && !isEndCell && !isStartCell) {
-      updateSelectedCells(row, column);
+      updateWallCells(row, column);
     }
   };
 
   const handleSelectCell = _ => {
-    if (isSelectingStartCell) {
-      // TODO - place in constants file
-      handleSelectStartOrEndCell(row, column, "start");
-    }
-
-    if (isSelectingEndCell) {
-      handleSelectStartOrEndCell(row, column, "end");
-    }
+    handleSelectStartOrEndCell(row, column);
   };
+
+  const timeout = time =>
+    setTimeout(() => {
+      if (!renderTraversal) {
+        setRenderTraversal(true);
+      }
+    }, time);
+
+  if (traversalStep > 0) {
+    timeout(traversalStep * 10);
+  }
 
   return (
     <td
-      onMouseEnter={updateSelectedValue}
+      onMouseEnter={handleUpdateWallCell}
       onMouseUp={handleSelectCell}
       className={clsName}
     >
@@ -53,17 +61,20 @@ Cell.propTypes = {
   baseClass: PropTypes.string,
   row: PropTypes.number.isRequired,
   column: PropTypes.number.isRequired,
-  selected: PropTypes.bool,
+  isWall: PropTypes.bool,
+  updateWallCells: PropTypes.func,
   handleSelectStartOrEndCell: PropTypes.func,
-  isSelectingStartCell: PropTypes.bool,
   isStartCell: PropTypes.bool,
-  isSelectingEndCell: PropTypes.bool,
-  isEndCell: PropTypes.bool
+  isEndCell: PropTypes.bool,
+  traversalStep: PropTypes.number,
+  isOptimalPath: PropTypes.bool
 };
 
 Cell.defaultProps = {
   baseClass: "graph-traversal-visualizer-cell",
-  selected: false
+  isWall: false,
+  traversalStep: 0,
+  isOptimalPath: false
 };
 
 export default Cell;
