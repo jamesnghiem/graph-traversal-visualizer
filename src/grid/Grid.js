@@ -214,7 +214,7 @@ class Grid extends React.PureComponent {
 
       cells = bfs
         ? [...unvisitedNeighbors, ...cells]
-        : [...cells, unvisitedNeighbors];
+        : [...cells, ...unvisitedNeighbors];
     }
   };
 
@@ -252,7 +252,7 @@ class Grid extends React.PureComponent {
         </div>
         <div
           className={`${baseClass}-run`}
-          onClick={this.performBreadthFirstSearch}
+          onClick={this.performDepthFirstSearch}
         >
           Run
         </div>
