@@ -22,9 +22,18 @@
     background-color: #383838;
   }
 
+  .graph-traversal-visualizer-cell.traversed {
+    background-color: skyblue;
+  }
+
+  .graph-traversal-visualizer-cell.optimal-path {
+    background-color: red;
+  }
+
   .graph-traversal-visualizer-grid-start-drag,
   .graph-traversal-visualizer-grid-end-drag,
-  .graph-traversal-visualizer-grid-reset-grid {
+  .graph-traversal-visualizer-grid-reset-grid,
+  .graph-traversal-visualizer-grid-run {
     padding-right: 50px;
     height: 20px;
     width: 20px;
