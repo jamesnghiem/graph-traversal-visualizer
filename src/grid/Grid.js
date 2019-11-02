@@ -127,7 +127,11 @@ class Grid extends React.PureComponent {
     return path;
   };
 
-  performBreadthFirstSearch = () => {
+  performBreadthFirstSearch = () => this.performBasicSearch(true);
+
+  performDepthFirstSearch = () => this.performBasicSearch(false);
+
+  performBasicSearch = bfs => {
     const { rowCount, columnCount } = this.props;
     const { startCell, endCell, wallCells } = this.state;
     if (!startCell || !endCell) {
@@ -146,10 +150,10 @@ class Grid extends React.PureComponent {
     const parentNodes = {};
 
     let step = 1;
-    let queue = [{ row: startRow, column: startColumn }];
+    let cells = [{ row: startRow, column: startColumn }];
 
-    while (queue.length > 0) {
-      const { row, column } = queue.pop();
+    while (cells.length > 0) {
+      const { row, column } = cells.pop();
       const currID = this.createIDFromRowAndCol({ row, column });
 
       if (row === endRow && column === endColumn) {
@@ -208,7 +212,9 @@ class Grid extends React.PureComponent {
         parentNodes[neighborID] = currID;
       });
 
-      queue = [...unvisitedNeighbors, ...queue];
+      cells = bfs
+        ? [...unvisitedNeighbors, ...cells]
+        : [...cells, unvisitedNeighbors];
     }
   };
 
